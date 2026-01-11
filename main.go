@@ -30,6 +30,20 @@ func getAlbums(c *gin.Context) {
 func main() {
 	router := gin.Default()
 	router.GET("/albums", getAlbums)
-
+	router.POST("/albums", postAlbums)
 	router.Run("localhost:8080")
+}
+
+// go doesnt enforce the order in which you dexlare functions
+func postAlbums(c *gin.Context) {
+	var newAlbum album
+
+	// call BindJSON to bind the received JSON to
+	// new album
+	if err := c.BindJSON(&newAlbum); err != nil {
+		return
+	}
+	albums = append(albums, newAlbum)
+	c.IndentedJSON(http.StatusCreated, newAlbum)
+
 }
